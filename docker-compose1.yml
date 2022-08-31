@@ -1,4 +1,4 @@
-version: "3.9"
+version: \"3.9\"
 
 ######### IMPORTANT #############
 # This is my main docker-compose file with most of the apps. I run docker on other systems with smaller stacks (web and synology).
@@ -90,7 +90,7 @@ x-common-keys-media: &common-keys-media
     - t2_proxy
   security_opt:
     - no-new-privileges:true
-  restart: "no"
+  restart: \"no\"
   # profiles:
   # - media
 
@@ -132,7 +132,7 @@ services:
       # - --providers.docker.endpoint=unix:///var/run/docker.sock # Use Docker Socket Proxy instead for improved security
       - --providers.docker.endpoint=tcp://socket-proxy:2375
       # Automatically set Host rule for services
-      # - --providers.docker.defaultrule=Host(`{{ index .Labels "com.docker.compose.service" }}.$DOMAINNAME_CLOUD_SERVER`)
+      # - --providers.docker.defaultrule=Host(`{{ index .Labels \"com.docker.compose.service\" }}.$DOMAINNAME_CLOUD_SERVER`)
       - --providers.docker.exposedByDefault=false
       # - --entrypoints.https.http.middlewares=chain-oauth@file
       - --entrypoints.https.http.tls.options=tls-opts@file
@@ -160,7 +160,7 @@ services:
         ipv4_address: 192.168.90.254 # You can specify a static IP
       socket_proxy:
     #healthcheck:
-    #  test: ["CMD", "traefik", "healthcheck", "--ping"]
+    #  test: [\"CMD\", \"traefik\", \"healthcheck\", \"--ping\"]
     #  interval: 5s
     #  retries: 3
     ports:
@@ -192,33 +192,33 @@ services:
       - cf_api_key
       - htpasswd
     labels:
-      #- "autoheal=true"
-      - "traefik.enable=true"
+      #- \"autoheal=true\"
+      - \"traefik.enable=true\"
       # HTTP-to-HTTPS Redirect
-      - "traefik.http.routers.http-catchall.entrypoints=http"
-      - "traefik.http.routers.http-catchall.rule=HostRegexp(`{host:.+}`)"
-      - "traefik.http.routers.http-catchall.middlewares=redirect-to-https"
-      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+      - \"traefik.http.routers.http-catchall.entrypoints=http\"
+      - \"traefik.http.routers.http-catchall.rule=HostRegexp(`{host:.+}`)\"
+      - \"traefik.http.routers.http-catchall.middlewares=redirect-to-https\"
+      - \"traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https\"
       # HTTP Routers
-      - "traefik.http.routers.traefik-rtr.entrypoints=https"
-      - "traefik.http.routers.traefik-rtr.rule=Host(`traefik.$DOMAINNAME_CLOUD_SERVER`)"
-      - "traefik.http.routers.traefik-rtr.tls=true" # Some people had 404s without this
-      - "traefik.http.routers.traefik-rtr.tls.certresolver=dns-cloudflare" # Comment out this line after first run of traefik to force the use of wildcard certs
-      - "traefik.http.routers.traefik-rtr.tls.domains[0].main=$DOMAINNAME_CLOUD_SERVER"
-      - "traefik.http.routers.traefik-rtr.tls.domains[0].sans=*.$DOMAINNAME_CLOUD_SERVER"
-      # - "traefik.http.routers.traefik-rtr.tls.domains[1].main=$DOMAINNAME2" # Pulls main cert for second domain
-      # - "traefik.http.routers.traefik-rtr.tls.domains[1].sans=*.$DOMAINNAME2" # Pulls wildcard cert for second domain
+      - \"traefik.http.routers.traefik-rtr.entrypoints=https\"
+      - \"traefik.http.routers.traefik-rtr.rule=Host(`traefik.$DOMAINNAME_CLOUD_SERVER`)\"
+      - \"traefik.http.routers.traefik-rtr.tls=true\" # Some people had 404s without this
+      - \"traefik.http.routers.traefik-rtr.tls.certresolver=dns-cloudflare\" # Comment out this line after first run of traefik to force the use of wildcard certs
+      - \"traefik.http.routers.traefik-rtr.tls.domains[0].main=$DOMAINNAME_CLOUD_SERVER\"
+      - \"traefik.http.routers.traefik-rtr.tls.domains[0].sans=*.$DOMAINNAME_CLOUD_SERVER\"
+      # - \"traefik.http.routers.traefik-rtr.tls.domains[1].main=$DOMAINNAME2\" # Pulls main cert for second domain
+      # - \"traefik.http.routers.traefik-rtr.tls.domains[1].sans=*.$DOMAINNAME2\" # Pulls wildcard cert for second domain
       ## Services - API
-      - "traefik.http.routers.traefik-rtr.service=api@internal"
+      - \"traefik.http.routers.traefik-rtr.service=api@internal\"
       ## Healthcheck/ping
-      #- "traefik.http.routers.ping.rule=Host(`traefik.$DOMAINNAME_CLOUD_SERVER`) && Path(`/ping`)"
-      #- "traefik.http.routers.ping.tls=true"
-      #- "traefik.http.routers.ping.service=ping@internal"
+      #- \"traefik.http.routers.ping.rule=Host(`traefik.$DOMAINNAME_CLOUD_SERVER`) && Path(`/ping`)\"
+      #- \"traefik.http.routers.ping.tls=true\"
+      #- \"traefik.http.routers.ping.service=ping@internal\"
       ## Middlewares
-      #- "traefik.http.routers.traefik-rtr.middlewares=chain-no-auth@file" # For No Authentication
-      - "traefik.http.routers.traefik-rtr.middlewares=chain-basic-auth@file" # For Basic HTTP Authentication
-     # - "traefik.http.routers.traefik-rtr.middlewares=chain-oauth@file" # For Google OAuth
-      #- "traefik.http.routers.traefik-rtr.middlewares=chain-authelia@file" # For Authelia Authentication
+      #- \"traefik.http.routers.traefik-rtr.middlewares=chain-no-auth@file\" # For No Authentication
+      - \"traefik.http.routers.traefik-rtr.middlewares=chain-basic-auth@file\" # For Basic HTTP Authentication
+     # - \"traefik.http.routers.traefik-rtr.middlewares=chain-oauth@file\" # For Google OAuth
+      #- \"traefik.http.routers.traefik-rtr.middlewares=chain-authelia@file\" # For Authelia Authentication
 
   # Docker Socket Proxy - Security Enchanced Proxy for Docker Socket
   socket-proxy:
@@ -230,11 +230,11 @@ services:
         ipv4_address: 192.168.91.254 # You can specify a static IP
     # privileged: true # true for VM. False for unprivileged LXC container.
     #ports:
-    # - "127.0.0.1:2375:2375" # Port 2375 should only ever get exposed to the internal network. When possible use this line.
+    # - \"127.0.0.1:2375:2375\" # Port 2375 should only ever get exposed to the internal network. When possible use this line.
     # I use the next line instead, as I want portainer to manage multiple docker endpoints within my home network.
-    # - "2375:2375"
+    # - \"2375:2375\"
     volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
+      - \"/var/run/docker.sock:/var/run/docker.sock\"
     environment:
       - LOG_LEVEL=info # debug,info,notice,warning,err,crit,alert,emerg
       ## Variables match the URL prefix (i.e. AUTH blocks access to /auth/* parts of the API, etc.).
