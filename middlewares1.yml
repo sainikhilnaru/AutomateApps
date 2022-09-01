@@ -3,9 +3,9 @@ http:
     middlewares-basic-auth:
       basicAuth:
         # users:
-        #   - \"user:$apsdfswWvC/6.$E3FtsfTntPC0wVJ7IUVtX1\"
-        usersFile: \"/run/secrets/htpasswd\" #be sure to mount the volume through docker-compose.yml
-        realm: \"Traefik 2 Basic Auth\"
+        #   - "user:$apsdfswWvC/6.$E3FtsfTntPC0wVJ7IUVtX1"
+        usersFile: "/run/secrets/htpasswd" #be sure to mount the volume through docker-compose.yml
+        realm: "Traefik 2 Basic Auth"
 
     middlewares-rate-limit:
       rateLimit:
@@ -25,23 +25,23 @@ http:
           - PUT
         accessControlMaxAge: 100
         hostsProxyHeaders:
-          - \"X-Forwarded-Host\"
+          - "X-Forwarded-Host"
         stsSeconds: 63072000
         stsIncludeSubdomains: true
         stsPreload: true
         forceSTSHeader: true
-        customFrameOptionsValue: \"allow-from https:oktaicenaru.site\" #CSP takes care of this but may be needed for organizr.
+        customFrameOptionsValue: "allow-from https:oktaicenaru.site" #CSP takes care of this but may be needed for organizr.
         contentTypeNosniff: true
         browserXssFilter: true
         # sslForceHost: true # add sslHost to all of the services
-        # sslHost: \"{{env \"DOMAINNAME_CLOUD_SERVER\"}}\"
-        referrerPolicy: \"same-origin\"
-        permissionsPolicy: \"camera=(), microphone=(), geolocation=(), payment=(), usb=(), vr=()\"
+        # sslHost: "{{env "DOMAINNAME_CLOUD_SERVER"}}"
+        referrerPolicy: "same-origin"
+        permissionsPolicy: "camera=(), microphone=(), geolocation=(), payment=(), usb=(), vr=()"
         customResponseHeaders:
-          X-Robots-Tag: \"none,noarchive,nosnippet,notranslate,noimageindex,\"
-          server: \"\"
+          X-Robots-Tag: "none,noarchive,nosnippet,notranslate,noimageindex,"
+          server: ""
           # https://community.traefik.io/t/how-to-make-websockets-work-with-traefik-2-0-setting-up-rancher/1732
-          # X-Forwarded-Proto: \"https\"
+          # X-Forwarded-Proto: "https"
 
     middlewares-compress:
       compress: {}
