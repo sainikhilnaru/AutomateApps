@@ -1,4 +1,4 @@
-
+#!/bin/bash
 ls
 sudo apt install tree
 sudo apt-get install -y  ca-certificates     curl     gnupg     lsb-release
