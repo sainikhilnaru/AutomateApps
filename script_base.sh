@@ -39,7 +39,7 @@ USERDIR=\"/root\"
 DOCKERDIR=\"/root/docker\"
 DATADIR=\"/media/storage\"" > .env 
 cd shared 
-echo "sainikhilnaru:$apr1$le8qz67b$k9lDqoz3BqZGjMPhYgY/z0" > .htpasswd 
+echo "sainikhilnaru:\$apr1\$le8qz67b\$k9lDqoz3BqZGjMPhYgY/z0" > .htpasswd 
 cd .. 
 echo "PUID=1000
 PGID=1000
